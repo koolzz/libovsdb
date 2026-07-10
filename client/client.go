@@ -1470,7 +1470,7 @@ func (o *ovsdbClient) GetSelectResultsByIndex(ops []ovsdb.Operation, results []o
 
 	// Validate target parameter
 	slicePtr := reflect.ValueOf(target)
-	if slicePtr.Type().Kind() != reflect.Ptr || slicePtr.IsNil() {
+	if slicePtr.Type().Kind() != reflect.Pointer || slicePtr.IsNil() {
 		return &ErrWrongType{slicePtr.Type(), "target must be a non-nil pointer to a slice of models"}
 	}
 
@@ -1481,7 +1481,7 @@ func (o *ovsdbClient) GetSelectResultsByIndex(ops []ovsdb.Operation, results []o
 
 	// GetSelectResultsByIndex only accepts a pointer to a slice of pointers to models
 	modelType := sliceVal.Type().Elem()
-	if modelType.Kind() != reflect.Ptr {
+	if modelType.Kind() != reflect.Pointer {
 		return &ErrWrongType{slicePtr.Type(), "target must be a pointer to a slice of model pointers"}
 	}
 	modelType = modelType.Elem()
