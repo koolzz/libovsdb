@@ -128,7 +128,7 @@ func (a api) List(ctx context.Context, result any) error {
 	}
 
 	resultPtr := reflect.ValueOf(result)
-	if resultPtr.Type().Kind() != reflect.Ptr {
+	if resultPtr.Type().Kind() != reflect.Pointer {
 		return &ErrWrongType{resultPtr.Type(), "Expected pointer to slice of valid Models"}
 	}
 
@@ -141,7 +141,7 @@ func (a api) List(ctx context.Context, result any) error {
 	// structs
 	var appendValue func(reflect.Value)
 	var m model.Model
-	if resultVal.Type().Elem().Kind() == reflect.Ptr {
+	if resultVal.Type().Elem().Kind() == reflect.Pointer {
 		m = reflect.New(resultVal.Type().Elem().Elem()).Interface()
 		appendValue = func(v reflect.Value) {
 			resultVal.Set(reflect.Append(resultVal, v))
